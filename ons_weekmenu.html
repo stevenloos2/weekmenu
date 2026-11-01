@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#17221d">
+<title>Ons Weekmenu</title>
+<style>
+:root{--bg:#111a16;--panel:#1d2a23;--panel2:#26362d;--cream:#f7f1e5;--muted:#c5cbbf;--green:#b9d59a;--gold:#f0c879}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#101914,#1c2a22);color:var(--cream);font:17px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
+header{padding:26px 22px 18px;text-align:center}header .eyebrow{color:var(--green);font-size:.85rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700}h1{font-size:clamp(2rem,5vw,3.3rem);margin:5px 0 0;line-height:1.1}header p{margin:9px 0 0;color:var(--muted)}
+main{max-width:1050px;margin:auto;padding:10px 18px 40px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:14px}
+.day{background:var(--panel);border:1px solid #3b4b40;border-radius:20px;overflow:hidden;display:flex;flex-direction:column;min-height:220px}
+.daytop{padding:16px 18px 4px;display:flex;justify-content:space-between;align-items:center;color:var(--green);font-size:.82rem;font-weight:800;letter-spacing:.1em}
+.day h2{font-size:1.35rem;margin:5px 18px 8px;line-height:1.2}
+.desc{margin:0 18px 14px;color:var(--muted);font-size:.92rem}
+.meta{margin:auto 18px 14px;display:flex;gap:8px;flex-wrap:wrap}.pill{background:var(--panel2);border-radius:99px;padding:5px 10px;color:#e8e8d8;font-size:.8rem}
+button{font:inherit;cursor:pointer;border:0}
+.open{margin:0 14px 14px;background:var(--green);color:#17221d;border-radius:12px;padding:12px 15px;font-weight:800}
+.note{margin:18px 2px 0;text-align:center;color:var(--muted);font-size:.9rem}
+#recipe{display:none;background:var(--panel);border:1px solid #435348;border-radius:20px;padding:clamp(18px,4vw,30px);margin-top:18px}
+#recipe h2{font-size:clamp(1.5rem,4vw,2.2rem);margin:8px 0}
+.back{background:transparent;color:var(--green);font-weight:800;padding:8px 0}
+.columns{display:grid;grid-template-columns:minmax(220px,.8fr) minmax(280px,1.2fr);gap:28px}
+h3{color:var(--green);margin-bottom:8px}li{padding:4px 0}ol li{padding:6px 0}.tip{background:var(--panel2);padding:13px 15px;border-radius:12px;color:#e9e4d5;margin-top:18px}
+footer{text-align:center;color:var(--muted);font-size:.82rem;padding:0 15px 28px}
+@media(max-width:650px){.columns{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr;gap:9px}.day{min-height:220px}.day h2{font-size:1.05rem;margin:5px 12px}.daytop{padding:13px 12px 3px}.desc{margin:0 12px 10px;font-size:.83rem}.meta{margin: auto 12px 10px}.open{margin:0 9px 10px;padding:10px 7px;font-size:.9rem}}
+@media(max-width:390px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+ <div class="eyebrow">Samen aan tafel</div>
+ <h1>🍽️ Ons Weekmenu</h1>
+ <p>5 ruime porties · maandag tot vrijdag · smakelijk!</p>
+</header>
+<main>
+ <section class="grid" id="menu">
+  <article class="day"><div class="daytop"><span>MAANDAG</span><span>01</span></div><h2>Balletjes in tomatensaus</h2><p class="desc">Met smeuïge aardappelpuree</p><div class="meta"><span class="pill">± 30 min</span><span class="pill">Stevige kost</span></div><button class="open" onclick="showRecipe(0)">Bekijk recept →</button></article>
+  <article class="day"><div class="daytop"><span>DINSDAG</span><span>02</span></div><h2>Kip met paprika</h2><p class="desc">Met rijst en kruidige saus</p><div class="meta"><span class="pill">± 25 min</span><span class="pill">Eén pan</span></div><button class="open" onclick="showRecipe(1)">Bekijk recept →</button></article>
+  <article class="day"><div class="daytop"><span>WOENSDAG</span><span>03</span></div><h2>Braadworst met boontjes</h2><p class="desc">Met gekookte aardappelen en jus</p><div class="meta"><span class="pill">± 25 min</span><span class="pill">Klassieker</span></div><button class="open" onclick="showRecipe(2)">Bekijk recept →</button></article>
+  <article class="day"><div class="daytop"><span>DONDERDAG</span><span>04</span></div><h2>Macaroni ham-kaas</h2><p class="desc">Romige kaassaus, lekker veel ham</p><div class="meta"><span class="pill">± 25 min</span><span class="pill">Extra portie</span></div><button class="open" onclick="showRecipe(3)">Bekijk recept →</button></article>
+  <article class="day"><div class="daytop"><span>VRIJDAG</span><span>05</span></div><h2>Vissticks met frietjes</h2><p class="desc">Met erwtjes en tartaarsaus</p><div class="meta"><span class="pill">± 25 min</span><span class="pill">Lekker makkelijk</span></div><button class="open" onclick="showRecipe(4)">Bekijk recept →</button></article>
+ </section>
+ <section id="recipe" aria-live="polite"></section>
+ <p class="note">Tik op een gerecht om het recept te openen. De eerste thuis begint! 😊</p>
+</main>
+<footer>Ons Weekmenu · recepten voor vijf flinke eters</footer>
+<script>
+const recipes=[
+{title:"Balletjes in tomatensaus met puree",time:"30–35 minuten",ingredients:["1 kg gemengd gehakt","1 ei","4 eetlepels paneermeel","2 blikken tomatenblokjes (à 400 g)","1 grote ui","2 kg aardappelen","Melk en boter voor de puree","Peper, zout en nootmuskaat"],steps:["Schil de aardappelen, snijd in stukken en kook ze gaar in licht gezouten water (ongeveer 20 minuten).","Meng het gehakt met ei, paneermeel, peper en zout. Rol flinke balletjes.","Bak de balletjes rondom bruin in een ruime pan. Haal ze even uit de pan.","Fruit de fijngesneden ui. Voeg tomatenblokjes toe en kruid met peper en zout.","Leg de balletjes terug in de saus en laat 12–15 minuten zachtjes garen tot ze helemaal gaar zijn.","Giet de aardappelen af en stamp met boter en een scheut melk tot puree. Kruid met nootmuskaat."],tip:"Maak gerust extra balletjes. Laat restjes snel afkoelen, zet ze in de koelkast en bewaar ze afgedekt."},
+{title:"Kip met paprika en rijst",time:"25–30 minuten",ingredients:["900 g à 1 kg kipfilet","500 g rijst","3 paprika's","2 uien","1 pot currysaus of kruidige kippenroomsaus","1 eetlepel olie","Peper en zout"],steps:["Zet de rijst op volgens de verpakking.","Snijd de kip in hapklare blokjes en kruid met peper en zout.","Verhit olie in een grote pan en bak de kip rondom goudbruin; bak zo nodig in twee porties.","Snijd ui en paprika in reepjes. Voeg toe en bak 5–7 minuten mee.","Roer de currysaus erdoor en laat zachtjes pruttelen tot de kip volledig gaar is.","Serveer met de rijst."],tip:"Snijd de groenten en kip vooraf. Bewaar rauwe kip afgedekt onderaan in de koelkast en gebruik aparte snijplanken."},
+{title:"Braadworst met boontjes en aardappelen",time:"25–30 minuten",ingredients:["6 à 7 braadworsten","2 kg aardappelen","900 g diepvriesboontjes","Boter of olie","Jus of jusblokje","Peper en zout"],steps:["Schil de aardappelen, snijd in gelijke stukken en kook ze in 18–20 minuten gaar.","Kook of stoom de boontjes volgens de verpakking. Giet af en meng met een klontje boter, peper en zout.","Bak de braadworsten op middelhoog vuur rondom bruin en gaar; draai regelmatig. Reken ongeveer 12–15 minuten, afhankelijk van de dikte.","Maak jus in de pan of volgens de aanwijzingen op de verpakking.","Serveer de worsten met aardappelen, boontjes en jus."],tip:"Haal de worsten de avond voordien uit de diepvries en laat ze afgedekt ontdooien in de koelkast. Niet op het aanrecht."},
+{title:"Macaroni met ham en kaassaus",time:"25–30 minuten",ingredients:["750 g macaroni","400–500 g hamblokjes","750 ml melk","60 g boter","60 g bloem","250–300 g geraspte kaas","Peper, zout en nootmuskaat"],steps:["Kook de macaroni beetgaar volgens de verpakking en giet af.","Smelt de boter in een kookpot. Roer de bloem erdoor en laat 1 minuut garen zonder te kleuren.","Voeg beetje bij beetje de melk toe terwijl je klopt, zodat je een gladde saus krijgt. Laat enkele minuten indikken.","Zet het vuur laag en roer de kaas erdoor. Kruid met peper, zout en nootmuskaat.","Meng de hamblokjes en macaroni door de saus. Warm goed door en serveer."],tip:"Dit gerecht is ideaal om een extra portie te maken voor de lunch. Voeg bij het opwarmen eventueel een scheutje melk toe."},
+{title:"Vissticks met frietjes en erwtjes",time:"25–30 minuten",ingredients:["25 à 30 vissticks","1,5–2 kg diepvriesfrieten","900 g diepvrieserwtjes","Mayonaise of tartaarsaus","Peper en zout","Klein klontje boter"],steps:["Verwarm de oven of airfryer volgens de aanwijzingen op de verpakkingen. Bak de frieten goudgeel en krokant.","Bak de vissticks in een pan met een beetje olie of bereid ze in oven/airfryer volgens de verpakking. Draai halverwege om indien nodig.","Kook de erwtjes enkele minuten in een bodempje water tot ze warm en gaar zijn. Giet af en meng met een klontje boter.","Serveer alles met mayonaise of tartaarsaus."],tip:"Bak eventueel in twee rondes zodat de frieten krokant blijven. Controleer de baktijden op de verpakking."}
+];
+function showRecipe(i){const r=recipes[i],box=document.getElementById('recipe');box.innerHTML=`<button class="back" onclick="hideRecipe()">← Terug naar weekmenu</button><div class="daytop" style="padding:8px 0 0"><span>${['MAANDAG','DINSDAG','WOENSDAG','DONDERDAG','VRIJDAG'][i]}</span><span>${r.time}</span></div><h2>${r.title}</h2><div class="columns"><div><h3>Wat heb je nodig?</h3><ul>${r.ingredients.map(x=>`<li>${x}</li>`).join('')}</ul></div><div><h3>Zo maak je het</h3><ol>${r.steps.map(x=>`<li>${x}</li>`).join('')}</ol></div></div><div class="tip"><strong>Tip van de kok:</strong> ${r.tip}</div>`;document.getElementById('menu').style.display='none';box.style.display='block';window.scrollTo(0,0)}
+function hideRecipe(){document.getElementById('recipe').style.display='none';document.getElementById('menu').style.display='grid';window.scrollTo(0,0)}
+</script>
+</body></html>
