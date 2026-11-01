@@ -44,6 +44,75 @@
     .error { color:#a12e27; white-space:pre-wrap; }
     footer { text-align:center; color:var(--muted); padding:22px 10px; font-size:.85rem; }
     @media (max-width:520px) { main { padding:15px 11px 36px; } .tile { min-height:135px; } section.panel { padding:16px; } }
+  /* Warme landelijke keukenstijl */
+body {
+  background: #f4f0e6;
+  color: #343b30;
+  font-family: Georgia, serif;
+}
+
+header {
+  background: #344b3b;
+  color: #fffaf0;
+  border-radius: 18px;
+  padding: 24px;
+}
+
+h1, h2, h3 {
+  color: #344b3b;
+}
+
+header h1 {
+  color: #fffaf0;
+}
+
+.card, .panel, .recipe-card, .shopping-panel {
+  background: #fffdf7;
+  border: 1px solid #e2dac8;
+  border-radius: 18px;
+  box-shadow: 0 4px 12px rgba(55, 65, 45, 0.08);
+}
+
+button, .btn {
+  background: #647b55;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 11px 16px;
+  cursor: pointer;
+}
+
+button:hover, .btn:hover {
+  background: #455d3e;
+}
+
+input {
+  border: 1px solid #d6cdbb;
+  border-radius: 10px;
+  padding: 10px;
+  background: #fffdf7;
+}
+
+.shopping-row {
+  background: #f8f5ec;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 7px;
+}
+
+@media (max-width: 520px) {
+  body {
+    padding: 10px;
+  }
+
+  header {
+    padding: 18px;
+  }
+
+  button, .btn {
+    padding: 12px;
+  }
+}
   </style>
 </head>
 <body>
