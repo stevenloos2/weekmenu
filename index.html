@@ -171,15 +171,63 @@
 
   async function loadShoppingItems() {
     if (!currentListId) return;
-    const { data, error } = await supabase.from('shopping_items').select('id,name,quantity,unit,purchased').eq('list_id', currentListId).order('created_at');
+    const { data, error } = await supabase.from('shopping_items').select('id,name,quantity,unit,purchased,category').eq('list_id', currentListId).order('created_at');
     if (error) { $('syncStatus').textContent = 'Kon lijst niet laden: '+error.message; return; }
-    $('shoppingItems').innerHTML = (data || []).map(item => `
-      <div class="shopping-row ${item.purchased ? 'done' : ''}">
-        <input type="checkbox" aria-label="Aangekocht" data-id="${item.id}" ${item.purchased ? 'checked' : ''}>
-        <span class="itemname">${escapeHtml(item.name)}${item.quantity ? ' · '+escapeHtml(item.quantity) : ''}${item.unit ? ' '+escapeHtml(item.unit) : ''}</span>
-        <button class="btn secondary" data-delete="${item.id}" aria-label="Verwijderen">✕</button>
-      </div>`).join('') || '<p class="small">De lijst is nog leeg. Voeg hieronder producten toe.</p>';
-    $('shoppingItems').querySelectorAll('input[type=checkbox]').forEach(el => el.addEventListener('change', async () => {
+    const groups = {};
+
+(data || []).forEach(item => {
+  const category = item.category || 'Overig';
+
+  if (!groups[category]) {
+    groups[category] = [];
+  }
+
+  groups[category].push(item);
+});
+
+const order = [
+  'Groenten en fruit',
+  'Vlees, vis en vleeswaren',
+  'Zuivel en eieren',
+  'Brood en bakkerij',
+  'Droge voeding',
+  'Diepvries',
+  'Kruiden en sauzen',
+  'Huishouden',
+  'Overig'
+];
+
+const categories = Object.keys(groups).sort((a, b) => {
+  const ai = order.indexOf(a);
+  const bi = order.indexOf(b);
+  return (ai < 0 ? 99 : ai) - (bi < 0 ? 99 : bi);
+});
+
+$('shoppingItems').innerHTML = categories.map(category => `
+  <h3>${category}</h3>
+  ${groups[category].map(item => `
+    <div class="shopping-row ${item.purchased ? 'done' : ''}">
+      <input type="checkbox" aria-label="Aangekocht"
+        data-id="${item.id}" ${item.purchased ? 'checked' : ''}>
+      <span class="itemname">${escapeHtml(item.name)}</span>
+      <button class="btn secondary" data-delete="${item.id}"
+        aria-label="Verwijderen">✕</button>
+    </div>
+  `).join('')}
+`).join('') || '<p>Je boodschappenlijst is nog leeg.</p>';
+  $('shoppingItems').querySelectorAll('input[type=checkbox]').forEach(el => el.addEventListener('change', async () => {
+  const { error } = await supabase
+    .from('shopping_items')
+    .delete()
+    .eq('id', el.dataset.id);
+
+  if (error) {
+    alert('Verwijderen mislukt: ' + error.message);
+    return;
+  }
+
+  await loadShoppingItems();
+}));
       const {error} = await supabase.from('shopping_items').update({purchased:el.checked}).eq('id',el.dataset.id);
       if (error) alert('Aanpassen mislukt: '+error.message);
       await loadShoppingItems();
@@ -222,6 +270,35 @@
     $('shoppingPanel').classList.add('hidden');
     $('loginOpen').classList.remove('hidden');
   });
+  function categoryFor(name) {
+  const n = name.toLowerCase();
+
+  if (/toiletpapier|wc-papier|wasmiddel|afwasmiddel|schoonmaak|vuilniszak|keukenrol|shampoo|tandpasta/.test(n))
+    return 'Huishouden';
+
+  if (/melk|kaas|boter|ei|room|yoghurt/.test(n))
+    return 'Zuivel en eieren';
+
+  if (/kip|gehakt|worst|ham|spek|vlees|vis/.test(n))
+    return 'Vlees, vis en vleeswaren';
+
+  if (/paprika|ui|tomaat|wortel|broccoli|boon|erwt|aardappel|sla|groente|fruit|appel|banaan/.test(n))
+    return 'Groenten en fruit';
+
+  if (/brood|pistolet|sandwich/.test(n))
+    return 'Brood en bakkerij';
+
+  if (/friet|diepvries|ijs/.test(n))
+    return 'Diepvries';
+
+  if (/koffie|thee|rijst|macaroni|pasta|bloem|suiker|paneermeel|olie/.test(n))
+    return 'Droge voeding';
+
+  if (/kruiden|saus|peper|zout|nootmuskaat/.test(n))
+    return 'Kruiden en sauzen';
+
+  return 'Overig';
+}
   $('generateList').addEventListener('click', async () => {
   if (!currentListId) return;
 
@@ -246,10 +323,11 @@
   const additions = ingredients
     .filter(name => !known.has(name.trim().toLowerCase()))
     .map(name => ({
-      list_id: currentListId,
-      name: name,
-      purchased: false
-    }));
+  list_id: currentListId,
+  name: name,
+  purchased: false,
+  category: categoryFor(name)
+}));
 
   if (additions.length === 0) {
     alert('Alle ingrediënten staan al op de boodschappenlijst!');
@@ -272,7 +350,11 @@
   $('addItem').addEventListener('click', async () => {
     const name = $('newItem').value.trim();
     if (!name || !currentListId) return;
-    const {error} = await supabase.from('shopping_items').insert({list_id:currentListId,name});
+    const {error} = await supabase.from('shopping_items').insert({
+  list_id: currentListId,
+  name: name,
+  category: categoryFor(name)
+});
     if (error) { alert('Toevoegen mislukt: '+error.message); return; }
     $('newItem').value = '';
     await loadShoppingItems();
