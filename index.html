@@ -232,10 +232,12 @@ input {
     btn.addEventListener('click', () => showRecipe(Number(btn.dataset.index)))
   );
 }
-  function showRecipe(i) {
-    $('recipePhoto').src = $('menuTiles').querySelectorAll('.tile')[i].querySelector('img').src;
-$('recipePhoto').alt = r.name;
+ function showRecipe(i) {
     const r = recipes[i];
+
+    $('recipePhoto').src = $('menuTiles').querySelectorAll('.tile')[i].querySelector('img').src;
+    $('recipePhoto').alt = r.name;
+
     $('recipeDay').textContent = r.day;
     $('recipeTitle').textContent = r.name;
     $('recipeMeta').textContent = `Ongeveer ${r.minutes} minuten`;
@@ -243,7 +245,7 @@ $('recipePhoto').alt = r.name;
     $('recipeSteps').innerHTML = r.steps.map(x => `<li>${escapeHtml(x)}</li>`).join('');
     $('recipeNote').textContent = r.note;
     $('recipeModal').classList.remove('hidden');
-  }
+}
   function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
   async function findOrCreateList() {
