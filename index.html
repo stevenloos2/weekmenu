@@ -228,10 +228,7 @@ $('shoppingItems').innerHTML = categories.map(category => `
 
   await loadShoppingItems();
 }));
-      const {error} = await supabase.from('shopping_items').update({purchased:el.checked}).eq('id',el.dataset.id);
-      if (error) alert('Aanpassen mislukt: '+error.message);
-      await loadShoppingItems();
-    }));
+      
     $('shoppingItems').querySelectorAll('[data-delete]').forEach(el => el.addEventListener('click', async () => {
       const {error} = await supabase.from('shopping_items').delete().eq('id',el.dataset.delete);
       if (error) alert('Verwijderen mislukt: '+error.message);
