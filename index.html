@@ -69,6 +69,11 @@
     Weekboodschappen toevoegen
   </button>
 </div>
+    <div class="actions">
+  <button class="btn" id="shareWhatsApp">
+    Deel boodschappenlijst via WhatsApp
+  </button>
+</div>
     <div id="shoppingItems"></div>
     <div class="addrow">
       <input id="newItem" placeholder="Nieuw product, bv. melk" maxlength="120">
@@ -356,6 +361,19 @@ $('shoppingItems').innerHTML = categories.map(category => `
     $('newItem').value = '';
     await loadShoppingItems();
   });
+  $('shareWhatsApp').addEventListener('click', () => {
+  const rows = [...$('shoppingItems').querySelectorAll('.shopping-row')];
+
+  if (rows.length === 0) {
+    alert('Je boodschappenlijst is nog leeg!');
+    return;
+  }
+
+  const message = 'Onze boodschappenlijst:\n\n' +
+    rows.map(row => '☐ ' + row.querySelector('.itemname').textContent.trim()).join('\n');
+
+  window.open('https://wa.me/?text=' + encodeURIComponent(message), '_blank');
+});
   $('newItem').addEventListener('keydown', e => { if (e.key === 'Enter') $('addItem').click(); });
   $('closeRecipe').addEventListener('click', () => $('recipeModal').classList.add('hidden'));
   $('recipeModal').addEventListener('click', e => { if (e.target === $('recipeModal')) $('recipeModal').classList.add('hidden'); });
