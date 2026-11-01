@@ -1,60 +1,238 @@
 <!doctype html>
 <html lang="nl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#17221d">
-<title>Ons Weekmenu</title>
-<style>
-:root{--bg:#111a16;--panel:#1d2a23;--panel2:#26362d;--cream:#f7f1e5;--muted:#c5cbbf;--green:#b9d59a;--gold:#f0c879}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#101914,#1c2a22);color:var(--cream);font:17px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
-header{padding:26px 22px 18px;text-align:center}header .eyebrow{color:var(--green);font-size:.85rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700}h1{font-size:clamp(2rem,5vw,3.3rem);margin:5px 0 0;line-height:1.1}header p{margin:9px 0 0;color:var(--muted)}
-main{max-width:1050px;margin:auto;padding:10px 18px 40px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:14px}
-.day{background:var(--panel);border:1px solid #3b4b40;border-radius:20px;overflow:hidden;display:flex;flex-direction:column;min-height:220px}
-.daytop{padding:16px 18px 4px;display:flex;justify-content:space-between;align-items:center;color:var(--green);font-size:.82rem;font-weight:800;letter-spacing:.1em}
-.day h2{font-size:1.35rem;margin:5px 18px 8px;line-height:1.2}
-.desc{margin:0 18px 14px;color:var(--muted);font-size:.92rem}
-.meta{margin:auto 18px 14px;display:flex;gap:8px;flex-wrap:wrap}.pill{background:var(--panel2);border-radius:99px;padding:5px 10px;color:#e8e8d8;font-size:.8rem}
-button{font:inherit;cursor:pointer;border:0}
-.open{margin:0 14px 14px;background:var(--green);color:#17221d;border-radius:12px;padding:12px 15px;font-weight:800}
-.note{margin:18px 2px 0;text-align:center;color:var(--muted);font-size:.9rem}
-#recipe{display:none;background:var(--panel);border:1px solid #435348;border-radius:20px;padding:clamp(18px,4vw,30px);margin-top:18px}
-#recipe h2{font-size:clamp(1.5rem,4vw,2.2rem);margin:8px 0}
-.back{background:transparent;color:var(--green);font-weight:800;padding:8px 0}
-.columns{display:grid;grid-template-columns:minmax(220px,.8fr) minmax(280px,1.2fr);gap:28px}
-h3{color:var(--green);margin-bottom:8px}li{padding:4px 0}ol li{padding:6px 0}.tip{background:var(--panel2);padding:13px 15px;border-radius:12px;color:#e9e4d5;margin-top:18px}
-footer{text-align:center;color:var(--muted);font-size:.82rem;padding:0 15px 28px}
-@media(max-width:650px){.columns{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr;gap:9px}.day{min-height:220px}.day h2{font-size:1.05rem;margin:5px 12px}.daytop{padding:13px 12px 3px}.desc{margin:0 12px 10px;font-size:.83rem}.meta{margin: auto 12px 10px}.open{margin:0 9px 10px;padding:10px 7px;font-size:.9rem}}
-@media(max-width:390px){.grid{grid-template-columns:1fr}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173b2b">
+  <title>Onze Gezinskeuken</title>
+  <style>
+    :root { --green:#173b2b; --green2:#24563d; --cream:#f5f3eb; --card:#fffdf7; --ink:#243229; --muted:#68756c; --line:#dce3d9; --gold:#e7bd68; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,Segoe UI,sans-serif; background:var(--cream); color:var(--ink); }
+    header { background:var(--green); color:white; padding:24px 18px 22px; text-align:center; }
+    header h1 { margin:0; font-size:clamp(1.7rem,5vw,2.5rem); }
+    header p { margin:7px 0 0; color:#e2ebdf; }
+    main { width:min(1000px,100%); margin:0 auto; padding:20px 14px 48px; }
+    .topbar { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:18px; }
+    .status { font-size:.9rem; color:var(--muted); }
+    .tiles { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr)); gap:14px; }
+    .tile { border:1px solid var(--line); border-radius:18px; background:var(--card); padding:19px 16px; text-align:left; min-height:155px; cursor:pointer; box-shadow:0 3px 12px #183b2b0c; color:var(--ink); }
+    .tile:focus-visible, button:focus-visible, input:focus-visible { outline:3px solid var(--gold); outline-offset:2px; }
+    .day { font-weight:750; color:var(--green2); font-size:.92rem; text-transform:uppercase; letter-spacing:.06em; }
+    .dish { display:block; font-size:1.12rem; font-weight:750; margin:12px 0 8px; line-height:1.25; }
+    .meta { color:var(--muted); font-size:.9rem; }
+    section.panel { margin-top:22px; padding:20px; background:var(--card); border:1px solid var(--line); border-radius:18px; }
+    h2 { color:var(--green); margin:0 0 12px; }
+    h3 { color:var(--green2); margin-bottom:7px; }
+    .btn { border:0; border-radius:11px; padding:11px 15px; background:var(--green2); color:white; font:inherit; font-weight:650; cursor:pointer; }
+    .btn.secondary { background:#e8eee6; color:var(--green); }
+    .btn.danger { background:#8b3831; }
+    .actions { display:flex; gap:9px; flex-wrap:wrap; margin-top:14px; }
+    .hidden { display:none !important; }
+    .modal { position:fixed; inset:0; background:#10251dcc; display:flex; align-items:center; justify-content:center; padding:14px; z-index:5; }
+    .modalbox { width:min(680px,100%); max-height:90vh; overflow:auto; background:var(--card); border-radius:18px; padding:22px; }
+    .modalbox ul,.modalbox ol { padding-left:23px; line-height:1.55; }
+    .login { max-width:430px; margin:24px auto; }
+    label { display:block; font-weight:650; margin:12px 0 5px; }
+    input { width:100%; padding:12px; border:1px solid #cbd6ca; border-radius:10px; font:inherit; background:white; }
+    .shopping-row { display:flex; gap:10px; align-items:center; padding:10px 0; border-bottom:1px solid var(--line); }
+    .shopping-row input[type=checkbox] { width:22px; height:22px; flex:0 0 auto; accent-color:var(--green2); }
+    .shopping-row .itemname { flex:1; }
+    .shopping-row.done .itemname { text-decoration:line-through; color:var(--muted); }
+    .small { font-size:.88rem; color:var(--muted); }
+    .addrow { display:grid; grid-template-columns:1fr auto; gap:8px; margin-top:12px; }
+    .error { color:#a12e27; white-space:pre-wrap; }
+    footer { text-align:center; color:var(--muted); padding:22px 10px; font-size:.85rem; }
+    @media (max-width:520px) { main { padding:15px 11px 36px; } .tile { min-height:135px; } section.panel { padding:16px; } }
+  </style>
 </head>
 <body>
 <header>
- <div class="eyebrow">Samen aan tafel</div>
- <h1>🍽️ Ons Weekmenu</h1>
- <p>5 ruime porties · maandag tot vrijdag · smakelijk!</p>
+  <h1>Onze Gezinskeuken</h1>
+  <p>Elke dag iets lekkers op tafel</p>
 </header>
 <main>
- <section class="grid" id="menu">
-  <article class="day"><div class="daytop"><span>MAANDAG</span><span>01</span></div><h2>Balletjes in tomatensaus</h2><p class="desc">Met smeuïge aardappelpuree</p><div class="meta"><span class="pill">± 30 min</span><span class="pill">Stevige kost</span></div><button class="open" onclick="showRecipe(0)">Bekijk recept →</button></article>
-  <article class="day"><div class="daytop"><span>DINSDAG</span><span>02</span></div><h2>Kip met paprika</h2><p class="desc">Met rijst en kruidige saus</p><div class="meta"><span class="pill">± 25 min</span><span class="pill">Eén pan</span></div><button class="open" onclick="showRecipe(1)">Bekijk recept →</button></article>
-  <article class="day"><div class="daytop"><span>WOENSDAG</span><span>03</span></div><h2>Braadworst met boontjes</h2><p class="desc">Met gekookte aardappelen en jus</p><div class="meta"><span class="pill">± 25 min</span><span class="pill">Klassieker</span></div><button class="open" onclick="showRecipe(2)">Bekijk recept →</button></article>
-  <article class="day"><div class="daytop"><span>DONDERDAG</span><span>04</span></div><h2>Macaroni ham-kaas</h2><p class="desc">Romige kaassaus, lekker veel ham</p><div class="meta"><span class="pill">± 25 min</span><span class="pill">Extra portie</span></div><button class="open" onclick="showRecipe(3)">Bekijk recept →</button></article>
-  <article class="day"><div class="daytop"><span>VRIJDAG</span><span>05</span></div><h2>Vissticks met frietjes</h2><p class="desc">Met erwtjes en tartaarsaus</p><div class="meta"><span class="pill">± 25 min</span><span class="pill">Lekker makkelijk</span></div><button class="open" onclick="showRecipe(4)">Bekijk recept →</button></article>
- </section>
- <section id="recipe" aria-live="polite"></section>
- <p class="note">Tik op een gerecht om het recept te openen. De eerste thuis begint! 😊</p>
+  <div class="topbar">
+    <div><strong>Ons weekmenu</strong><div class="status" id="connectionStatus">Verbinden met de gezinskeuken…</div></div>
+    <button class="btn secondary" id="loginOpen">Inloggen boodschappenlijst</button>
+  </div>
+
+  <div class="tiles" id="menuTiles"></div>
+
+  <section class="panel hidden" id="shoppingPanel">
+    <div class="topbar">
+      <div><h2>Gedeelde boodschappenlijst</h2><div class="small">Aangevinkte producten worden ook op de andere gsm's afgevinkt.</div></div>
+      <button class="btn secondary" id="logoutBtn">Uitloggen</button>
+    </div>
+    <div id="shoppingItems"></div>
+    <div class="addrow">
+      <input id="newItem" placeholder="Nieuw product, bv. melk" maxlength="120">
+      <button class="btn" id="addItem">Toevoegen</button>
+    </div>
+    <p class="small" id="syncStatus">De lijst wordt automatisch vernieuwd.</p>
+  </section>
+
+  <section class="panel login hidden" id="loginPanel">
+    <h2>Gezinsaccount</h2>
+    <p class="small">Log op elke gsm in met hetzelfde gezinsaccount.</p>
+    <label for="email">E-mailadres</label>
+    <input id="email" type="email" autocomplete="username" placeholder="E-mailadres van het gezinsaccount">
+    <label for="password">Wachtwoord</label>
+    <input id="password" type="password" autocomplete="current-password" placeholder="Wachtwoord">
+    <div class="actions">
+      <button class="btn" id="loginBtn">Inloggen</button>
+      <button class="btn secondary" id="cancelLogin">Annuleren</button>
+    </div>
+    <p class="error" id="loginError"></p>
+  </section>
 </main>
-<footer>Ons Weekmenu · recepten voor vijf flinke eters</footer>
-<script>
-const recipes=[
-{title:"Balletjes in tomatensaus met puree",time:"30–35 minuten",ingredients:["1 kg gemengd gehakt","1 ei","4 eetlepels paneermeel","2 blikken tomatenblokjes (à 400 g)","1 grote ui","2 kg aardappelen","Melk en boter voor de puree","Peper, zout en nootmuskaat"],steps:["Schil de aardappelen, snijd in stukken en kook ze gaar in licht gezouten water (ongeveer 20 minuten).","Meng het gehakt met ei, paneermeel, peper en zout. Rol flinke balletjes.","Bak de balletjes rondom bruin in een ruime pan. Haal ze even uit de pan.","Fruit de fijngesneden ui. Voeg tomatenblokjes toe en kruid met peper en zout.","Leg de balletjes terug in de saus en laat 12–15 minuten zachtjes garen tot ze helemaal gaar zijn.","Giet de aardappelen af en stamp met boter en een scheut melk tot puree. Kruid met nootmuskaat."],tip:"Maak gerust extra balletjes. Laat restjes snel afkoelen, zet ze in de koelkast en bewaar ze afgedekt."},
-{title:"Kip met paprika en rijst",time:"25–30 minuten",ingredients:["900 g à 1 kg kipfilet","500 g rijst","3 paprika's","2 uien","1 pot currysaus of kruidige kippenroomsaus","1 eetlepel olie","Peper en zout"],steps:["Zet de rijst op volgens de verpakking.","Snijd de kip in hapklare blokjes en kruid met peper en zout.","Verhit olie in een grote pan en bak de kip rondom goudbruin; bak zo nodig in twee porties.","Snijd ui en paprika in reepjes. Voeg toe en bak 5–7 minuten mee.","Roer de currysaus erdoor en laat zachtjes pruttelen tot de kip volledig gaar is.","Serveer met de rijst."],tip:"Snijd de groenten en kip vooraf. Bewaar rauwe kip afgedekt onderaan in de koelkast en gebruik aparte snijplanken."},
-{title:"Braadworst met boontjes en aardappelen",time:"25–30 minuten",ingredients:["6 à 7 braadworsten","2 kg aardappelen","900 g diepvriesboontjes","Boter of olie","Jus of jusblokje","Peper en zout"],steps:["Schil de aardappelen, snijd in gelijke stukken en kook ze in 18–20 minuten gaar.","Kook of stoom de boontjes volgens de verpakking. Giet af en meng met een klontje boter, peper en zout.","Bak de braadworsten op middelhoog vuur rondom bruin en gaar; draai regelmatig. Reken ongeveer 12–15 minuten, afhankelijk van de dikte.","Maak jus in de pan of volgens de aanwijzingen op de verpakking.","Serveer de worsten met aardappelen, boontjes en jus."],tip:"Haal de worsten de avond voordien uit de diepvries en laat ze afgedekt ontdooien in de koelkast. Niet op het aanrecht."},
-{title:"Macaroni met ham en kaassaus",time:"25–30 minuten",ingredients:["750 g macaroni","400–500 g hamblokjes","750 ml melk","60 g boter","60 g bloem","250–300 g geraspte kaas","Peper, zout en nootmuskaat"],steps:["Kook de macaroni beetgaar volgens de verpakking en giet af.","Smelt de boter in een kookpot. Roer de bloem erdoor en laat 1 minuut garen zonder te kleuren.","Voeg beetje bij beetje de melk toe terwijl je klopt, zodat je een gladde saus krijgt. Laat enkele minuten indikken.","Zet het vuur laag en roer de kaas erdoor. Kruid met peper, zout en nootmuskaat.","Meng de hamblokjes en macaroni door de saus. Warm goed door en serveer."],tip:"Dit gerecht is ideaal om een extra portie te maken voor de lunch. Voeg bij het opwarmen eventueel een scheutje melk toe."},
-{title:"Vissticks met frietjes en erwtjes",time:"25–30 minuten",ingredients:["25 à 30 vissticks","1,5–2 kg diepvriesfrieten","900 g diepvrieserwtjes","Mayonaise of tartaarsaus","Peper en zout","Klein klontje boter"],steps:["Verwarm de oven of airfryer volgens de aanwijzingen op de verpakkingen. Bak de frieten goudgeel en krokant.","Bak de vissticks in een pan met een beetje olie of bereid ze in oven/airfryer volgens de verpakking. Draai halverwege om indien nodig.","Kook de erwtjes enkele minuten in een bodempje water tot ze warm en gaar zijn. Giet af en meng met een klontje boter.","Serveer alles met mayonaise of tartaarsaus."],tip:"Bak eventueel in twee rondes zodat de frieten krokant blijven. Controleer de baktijden op de verpakking."}
-];
-function showRecipe(i){const r=recipes[i],box=document.getElementById('recipe');box.innerHTML=`<button class="back" onclick="hideRecipe()">← Terug naar weekmenu</button><div class="daytop" style="padding:8px 0 0"><span>${['MAANDAG','DINSDAG','WOENSDAG','DONDERDAG','VRIJDAG'][i]}</span><span>${r.time}</span></div><h2>${r.title}</h2><div class="columns"><div><h3>Wat heb je nodig?</h3><ul>${r.ingredients.map(x=>`<li>${x}</li>`).join('')}</ul></div><div><h3>Zo maak je het</h3><ol>${r.steps.map(x=>`<li>${x}</li>`).join('')}</ol></div></div><div class="tip"><strong>Tip van de kok:</strong> ${r.tip}</div>`;document.getElementById('menu').style.display='none';box.style.display='block';window.scrollTo(0,0)}
-function hideRecipe(){document.getElementById('recipe').style.display='none';document.getElementById('menu').style.display='grid';window.scrollTo(0,0)}
+
+<div class="modal hidden" id="recipeModal" role="dialog" aria-modal="true" aria-labelledby="recipeTitle">
+  <div class="modalbox">
+    <div class="topbar"><div class="small" id="recipeDay"></div><button class="btn secondary" id="closeRecipe">Sluiten ✕</button></div>
+    <h2 id="recipeTitle"></h2>
+    <p class="small" id="recipeMeta"></p>
+    <h3>Ingrediënten voor 4 grote eters</h3><ul id="recipeIngredients"></ul>
+    <h3>Bereiding</h3><ol id="recipeSteps"></ol>
+    <p class="small" id="recipeNote"></p>
+  </div>
+</div>
+
+<footer>Onze Gezinskeuken · samen plannen, samen boodschappen doen</footer>
+
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+  // Deze twee waarden horen bij het Supabase-project van jullie gezinskeuken.
+  const SUPABASE_URL = 'https://bzlrjbgrkvfoxzedibyi.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_VNWliZMOKa6v9oPxfn0Qjw_S4eg9wjH';
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const recipes = [
+    { day:'Maandag', name:'Balletjes in tomatensaus met puree', minutes:35, note:'De ui gaart mee in de saus. Serveer eventueel met extra worteltjes of broccoli.',
+      ingredients:['1 kg gemengd gehakt','1 ei','4 eetlepels paneermeel','2 blikken tomatenblokjes','1 grote ui, fijngesneden','2 kg aardappelen','Melk en boter voor de puree','Peper, zout en Italiaanse kruiden'],
+      steps:['Meng het gehakt met ei, paneermeel, peper en zout. Rol stevige balletjes.','Bak de balletjes rondom bruin in een ruime kookpot of pan.','Voeg de fijngesneden ui toe en laat even zacht worden.','Voeg de tomatenblokjes en kruiden toe. Laat 20 minuten zacht sudderen tot de balletjes gaar zijn.','Kook de aardappelen gaar en stamp met melk en boter tot puree.'] },
+    { day:'Dinsdag', name:'Kip met paprika en rijst', minutes:30, note:'De paprika en ui worden volledig meegebakken en gestoofd.',
+      ingredients:['900 g à 1 kg kipfilet','500 g rijst','3 paprika’s, in reepjes','2 uien, fijngesneden','1 pot milde currysaus','1 eetlepel olie'],
+      steps:['Kook de rijst volgens de verpakking.','Snijd de kip in hapklare stukken en bak gaar in olie.','Voeg ui en paprika toe en bak 8 à 10 minuten mee.','Roer de currysaus erdoor en laat zachtjes doorwarmen.','Serveer met de rijst.'] },
+    { day:'Woensdag', name:'Macaroni met ham en kaassaus', minutes:35, note:'Ideaal om vooraf te maken. Bewaar gekoeld en warm een portie goed door in de microgolfoven. Voeg eventueel een scheutje melk toe.',
+      ingredients:['750 g macaroni','400 à 500 g hamblokjes','750 ml melk','60 g boter','60 g bloem','250 à 300 g geraspte kaas','Peper, zout en nootmuskaat'],
+      steps:['Kook de macaroni beetgaar en giet af.','Smelt de boter, roer de bloem erdoor en laat 1 minuut garen.','Voeg beetje bij beetje de melk toe en blijf roeren tot een gladde saus.','Roer de kaas en kruiden door de saus.','Meng macaroni en ham onder de saus. Verdeel in porties.','Laat snel afkoelen, zet afgedekt in de koelkast en warm later een portie door en door op.'] },
+    { day:'Donderdag', name:'Braadworst met boontjes en aardappelen', minutes:30, note:'Een eenvoudige Belgische klassieker.',
+      ingredients:['8 braadworsten','1,5 à 2 kg aardappelen','800 g sperziebonen (vers of diepvries)','Boter of olie','Peper, zout en nootmuskaat'],
+      steps:['Schil de aardappelen en kook ze gaar.','Kook of stoom de boontjes gaar en kruid met peper, zout en nootmuskaat.','Bak de braadworsten rondom bruin en gaar volgens de verpakking.','Serveer met aardappelen en boontjes.'] },
+    { day:'Vrijdag', name:'Kipfilet met ovenfriet en erwtjes', minutes:35, note:'Een alternatief voor fishsticks. Gebruik de oven of airfryer voor de frietjes.',
+      ingredients:['900 g à 1 kg kipfilet','1,2 kg ovenfriet','600 g diepvrieserwtjes','1 eetlepel olie','Paprikapoeder, peper en zout','Eventueel appelmoes'],
+      steps:['Verwarm de oven of airfryer en bereid de frietjes volgens de verpakking.','Kruid de kipfilets met olie, paprikapoeder, peper en zout.','Bak de kipfilets in de pan of oven tot ze volledig gaar zijn.','Kook de erwtjes enkele minuten gaar en giet af.','Serveer alles samen, eventueel met appelmoes.'] }
+  ];
+
+  const $ = id => document.getElementById(id);
+  let currentUser = null;
+  let currentListId = null;
+  let refreshTimer = null;
+
+  function renderMenu() {
+    $('menuTiles').innerHTML = recipes.map((r,i) => `
+      <button class="tile" type="button" data-index="${i}">
+        <span class="day">${r.day}</span><span class="dish">${r.name}</span>
+        <span class="meta">${r.minutes} min · 4 grote eters</span>
+      </button>`).join('');
+    $('menuTiles').querySelectorAll('.tile').forEach(btn => btn.addEventListener('click', () => showRecipe(Number(btn.dataset.index))));
+  }
+  function showRecipe(i) {
+    const r = recipes[i];
+    $('recipeDay').textContent = r.day;
+    $('recipeTitle').textContent = r.name;
+    $('recipeMeta').textContent = `Ongeveer ${r.minutes} minuten`;
+    $('recipeIngredients').innerHTML = r.ingredients.map(x => `<li>${escapeHtml(x)}</li>`).join('');
+    $('recipeSteps').innerHTML = r.steps.map(x => `<li>${escapeHtml(x)}</li>`).join('');
+    $('recipeNote').textContent = r.note;
+    $('recipeModal').classList.remove('hidden');
+  }
+  function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+  async function findOrCreateList() {
+    const today = new Date();
+    const monday = new Date(today);
+    monday.setDate(today.getDate() - ((today.getDay() + 6) % 7));
+    const weekStart = monday.toISOString().slice(0,10);
+    let { data, error } = await supabase.from('shopping_lists').select('id').eq('week_start', weekStart).order('created_at', {ascending:true}).limit(1);
+    if (error) throw error;
+    if (data?.length) return data[0].id;
+    const created = await supabase.from('shopping_lists').insert({name:'Boodschappen week '+weekStart, week_start:weekStart}).select('id').single();
+    if (created.error) throw created.error;
+    return created.data.id;
+  }
+
+  async function loadShoppingItems() {
+    if (!currentListId) return;
+    const { data, error } = await supabase.from('shopping_items').select('id,name,quantity,unit,purchased').eq('list_id', currentListId).order('created_at');
+    if (error) { $('syncStatus').textContent = 'Kon lijst niet laden: '+error.message; return; }
+    $('shoppingItems').innerHTML = (data || []).map(item => `
+      <div class="shopping-row ${item.purchased ? 'done' : ''}">
+        <input type="checkbox" aria-label="Aangekocht" data-id="${item.id}" ${item.purchased ? 'checked' : ''}>
+        <span class="itemname">${escapeHtml(item.name)}${item.quantity ? ' · '+escapeHtml(item.quantity) : ''}${item.unit ? ' '+escapeHtml(item.unit) : ''}</span>
+        <button class="btn secondary" data-delete="${item.id}" aria-label="Verwijderen">✕</button>
+      </div>`).join('') || '<p class="small">De lijst is nog leeg. Voeg hieronder producten toe.</p>';
+    $('shoppingItems').querySelectorAll('input[type=checkbox]').forEach(el => el.addEventListener('change', async () => {
+      const {error} = await supabase.from('shopping_items').update({purchased:el.checked}).eq('id',el.dataset.id);
+      if (error) alert('Aanpassen mislukt: '+error.message);
+      await loadShoppingItems();
+    }));
+    $('shoppingItems').querySelectorAll('[data-delete]').forEach(el => el.addEventListener('click', async () => {
+      const {error} = await supabase.from('shopping_items').delete().eq('id',el.dataset.delete);
+      if (error) alert('Verwijderen mislukt: '+error.message);
+      await loadShoppingItems();
+    }));
+    $('syncStatus').textContent = 'Laatst bijgewerkt: '+new Date().toLocaleTimeString('nl-BE');
+  }
+
+  async function showSignedIn(user) {
+    currentUser = user;
+    $('loginPanel').classList.add('hidden');
+    $('loginOpen').classList.add('hidden');
+    $('shoppingPanel').classList.remove('hidden');
+    try {
+      currentListId = await findOrCreateList();
+      await loadShoppingItems();
+      clearInterval(refreshTimer);
+      refreshTimer = setInterval(loadShoppingItems, 5000);
+    } catch (e) {
+      $('syncStatus').textContent = 'Fout bij openen boodschappenlijst: '+e.message;
+    }
+  }
+
+  $('loginOpen').addEventListener('click', () => $('loginPanel').classList.remove('hidden'));
+  $('cancelLogin').addEventListener('click', () => $('loginPanel').classList.add('hidden'));
+  $('loginBtn').addEventListener('click', async () => {
+    $('loginError').textContent = '';
+    const {data,error} = await supabase.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});
+    if (error) { $('loginError').textContent = error.message; return; }
+    await showSignedIn(data.user);
+  });
+  $('logoutBtn').addEventListener('click', async () => {
+    clearInterval(refreshTimer);
+    await supabase.auth.signOut();
+    currentUser = null; currentListId = null;
+    $('shoppingPanel').classList.add('hidden');
+    $('loginOpen').classList.remove('hidden');
+  });
+  $('addItem').addEventListener('click', async () => {
+    const name = $('newItem').value.trim();
+    if (!name || !currentListId) return;
+    const {error} = await supabase.from('shopping_items').insert({list_id:currentListId,name});
+    if (error) { alert('Toevoegen mislukt: '+error.message); return; }
+    $('newItem').value = '';
+    await loadShoppingItems();
+  });
+  $('newItem').addEventListener('keydown', e => { if (e.key === 'Enter') $('addItem').click(); });
+  $('closeRecipe').addEventListener('click', () => $('recipeModal').classList.add('hidden'));
+  $('recipeModal').addEventListener('click', e => { if (e.target === $('recipeModal')) $('recipeModal').classList.add('hidden'); });
+
+  renderMenu();
+  const {data:sessionData} = await supabase.auth.getSession();
+  $('connectionStatus').textContent = 'Weekmenu geladen · log in om de gedeelde lijst te gebruiken';
+  if (sessionData.session?.user) await showSignedIn(sessionData.session.user);
 </script>
-</body></html>
+</body>
+</html>
