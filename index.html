@@ -211,13 +211,27 @@ input {
   let refreshTimer = null;
 
   function renderMenu() {
-    $('menuTiles').innerHTML = recipes.map((r,i) => `
-      <button class="tile" type="button" data-index="${i}">
-        <span class="day">${r.day}</span><span class="dish">${r.name}</span>
-        <span class="meta">${r.minutes} min · 4 grote eters</span>
-      </button>`).join('');
-    $('menuTiles').querySelectorAll('.tile').forEach(btn => btn.addEventListener('click', () => showRecipe(Number(btn.dataset.index))));
-  }
+  const photos = [
+    'https://images.unsplash.com/photo-1529042410759-befb1204b468?w=600',
+    'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=600',
+    'https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=600',
+    'https://images.unsplash.com/photo-1547592180-85f173990554?w=600',
+    'https://images.unsplash.com/photo-1534939561126-855b8675edd7?w=600'
+  ];
+
+  $('menuTiles').innerHTML = recipes.map((r,i) => `
+    <button class="tile" type="button" data-index="${i}">
+      <img src="${photos[i]}" alt="${r.name}"
+        style="width:100%;height:130px;object-fit:cover;border-radius:12px;margin-bottom:10px;">
+      <span class="day">${r.day}</span>
+      <span class="dish">${r.name}</span>
+      <span class="meta">${r.minutes} min · 4 grote eters</span>
+    </button>`).join('');
+
+  $('menuTiles').querySelectorAll('.tile').forEach(btn =>
+    btn.addEventListener('click', () => showRecipe(Number(btn.dataset.index)))
+  );
+}
   function showRecipe(i) {
     const r = recipes[i];
     $('recipeDay').textContent = r.day;
