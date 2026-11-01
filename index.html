@@ -169,7 +169,7 @@ input {
 <div class="modal hidden" id="recipeModal" role="dialog" aria-modal="true" aria-labelledby="recipeTitle">
   <div class="modalbox">
     <div class="topbar"><div class="small" id="recipeDay"></div><button class="btn secondary" id="closeRecipe">Sluiten ✕</button></div>
-    <h2 id="recipeTitle"></h2>
+    <h2 id="recipeTitle"></h2><img id="recipePhoto" src="" alt="Foto van het gerecht" style="width:100%;max-height:280px;object-fit:cover;border-radius:14px;margin:12px 0;">
     <p class="small" id="recipeMeta"></p>
     <h3>Ingrediënten voor 4 grote eters</h3><ul id="recipeIngredients"></ul>
     <h3>Bereiding</h3><ol id="recipeSteps"></ol>
@@ -233,6 +233,8 @@ input {
   );
 }
   function showRecipe(i) {
+    $('recipePhoto').src = $('menuTiles').querySelectorAll('.tile')[i].querySelector('img').src;
+$('recipePhoto').alt = r.name;
     const r = recipes[i];
     $('recipeDay').textContent = r.day;
     $('recipeTitle').textContent = r.name;
