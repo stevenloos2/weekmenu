@@ -64,6 +64,11 @@
       <div><h2>Gedeelde boodschappenlijst</h2><div class="small">Aangevinkte producten worden ook op de andere gsm's afgevinkt.</div></div>
       <button class="btn secondary" id="logoutBtn">Uitloggen</button>
     </div>
+    <div class="actions" style="margin:0 0 12px">
+  <button class="btn" id="generateList">
+    Weekboodschappen toevoegen
+  </button>
+</div>
     <div id="shoppingItems"></div>
     <div class="addrow">
       <input id="newItem" placeholder="Nieuw product, bv. melk" maxlength="120">
@@ -217,6 +222,53 @@
     $('shoppingPanel').classList.add('hidden');
     $('loginOpen').classList.remove('hidden');
   });
+  $('generateList').addEventListener('click', async () => {
+  if (!currentListId) return;
+
+  const { data: existing, error: readError } = await supabase
+    .from('shopping_items')
+    .select('name')
+    .eq('list_id', currentListId);
+
+  if (readError) {
+    alert('Fout bij het lezen van de lijst: ' + readError.message);
+    return;
+  }
+
+  const known = new Set(
+    (existing || []).map(item => item.name.trim().toLowerCase())
+  );
+
+  const ingredients = [...new Set(
+    recipes.flatMap(recipe => recipe.ingredients)
+  )];
+
+  const additions = ingredients
+    .filter(name => !known.has(name.trim().toLowerCase()))
+    .map(name => ({
+      list_id: currentListId,
+      name: name,
+      purchased: false
+    }));
+
+  if (additions.length === 0) {
+    alert('Alle ingrediënten staan al op de boodschappenlijst!');
+    return;
+  }
+
+  const { error } = await supabase
+    .from('shopping_items')
+    .insert(additions);
+
+  if (error) {
+    alert('Toevoegen mislukt: ' + error.message);
+    return;
+  }
+
+  await loadShoppingItems();
+
+  alert(additions.length + ' ingrediënten toegevoegd!');
+});
   $('addItem').addEventListener('click', async () => {
     const name = $('newItem').value.trim();
     if (!name || !currentListId) return;
